@@ -12,12 +12,11 @@ namespace TekConf
     using System;
     using System.Collections.Generic;
     
-    public partial class AspNetUserLogins
+    public partial class C__MigrationHistory
     {
-        public string LoginProvider { get; set; }
-        public string ProviderKey { get; set; }
-        public string UserId { get; set; }
-    
-        public virtual AspNetUsers AspNetUsers { get; set; }
+        public string MigrationId { get; set; }
+        public string ContextKey { get; set; }
+        public byte[] Model { get; set; }
+        public string ProductVersion { get; set; }
     }
 }
