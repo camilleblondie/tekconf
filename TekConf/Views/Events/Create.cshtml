@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Event.time, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Event.time, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Event.time, new { htmlAttributes = new { @class = "form-control", @Value = "" } })
                 @Html.ValidationMessageFor(model => model.Event.time, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -68,11 +68,24 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @*@Html.DropDownListFor(model => model.technologies, Model.technologies)*@
-                <select class="js-example-basic-multiple" multiple="multiple">
+                <select class="js-example-basic-multiple" multiple="multiple" name="technologies[]">
                     @foreach (Technology t in Model.technologies)
                     {
                         <option value="@t.id">@t.name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <h4>Speakers</h4>
+        <hr />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <select class="js-example-basic-multiple" multiple="multiple" name="speakers[]">
+                    @foreach (AspNetUsers u in Model.speakers)
+                    {
+                        <option value="@u.Id">@(u.Firstname + " " + u.Lastname)</option>
                     }
                 </select>
             </div>

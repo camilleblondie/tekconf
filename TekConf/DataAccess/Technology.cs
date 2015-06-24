@@ -21,5 +21,21 @@ namespace TekConf.DataAccess
                 }
             }
         }
+
+        //public static bool AddTechnologiesToEvent(long[] technologies, long eventId)
+        //{
+        //    using (teckconfdbEntities db = new teckconfdbEntities())
+        //    {
+        //        try
+        //        {
+        //            var query = insert into teckconfdbEntities.Eve
+        //            return true;
+        //        }
+        //        catch (Exception)
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
     }
 }

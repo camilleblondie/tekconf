@@ -23,7 +23,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Events", "About", "Home")</li>
+                    <li>@Html.ActionLink("Events", "Index", "Events")</li>
                     <li>@Html.ActionLink("Speakers", "Contact", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -43,5 +43,6 @@
     @RenderSection("scripts", required: false)
     <script src="~/Scripts/select2.min.js"></script>
     <script>$(".js-example-basic-multiple").select2();</script>
+
 </body>
 </html>

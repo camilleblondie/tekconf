@@ -16,7 +16,7 @@ namespace TekConf
     {
         public Event()
         {
-            this.Event_User = new HashSet<Event_User>();
+            this.Event_AspNetUsers = new HashSet<Event_AspNetUsers>();
             this.Technology = new HashSet<Technology>();
         }
     
@@ -28,7 +28,7 @@ namespace TekConf
         public string event_link { get; set; }
         public string video_link { get; set; }
     
-        public virtual ICollection<Event_User> Event_User { get; set; }
+        public virtual ICollection<Event_AspNetUsers> Event_AspNetUsers { get; set; }
         public virtual ICollection<Technology> Technology { get; set; }
     }
 }

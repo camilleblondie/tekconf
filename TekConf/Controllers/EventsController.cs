@@ -42,6 +42,7 @@ namespace TekConf.Controllers
             EventCreateViewModel eventCreateViewModel = new EventCreateViewModel();
             eventCreateViewModel.Event = new Event();
             eventCreateViewModel.technologies = DataAccess.Technology.GetTechnologiesList();
+            eventCreateViewModel.speakers = DataAccess.AspNetUsers.GetUsersList();
             return View(eventCreateViewModel);
         }
 
@@ -50,16 +51,25 @@ namespace TekConf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,name,description,location,time,event_link,video_link")] Event @event)
+        public ActionResult Create(Event @event, long[] technologies, string[] speakers)
         {
+            if (technologies == null)
+                technologies = new long[] { };
+            if (speakers == null)
+                speakers = new string[] { };
             if (ModelState.IsValid)
             {
+                @event.Technology = db.Technology.Where(t => technologies.Contains(t.id)).ToList();
                 db.Event.Add(@event);
+                db.SaveChanges();
+                @event.Event_AspNetUsers = speakers.Select(s => new Event_AspNetUsers { user_id = s, event_id = @event.id, type = "speaker" }).ToList();
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(@event);
+            EventCreateViewModel eventCreateViewModel = new EventCreateViewModel();
+            eventCreateViewModel.Event = @event;
+            eventCreateViewModel.technologies = DataAccess.Technology.GetTechnologiesList();
+            return View(eventCreateViewModel);
         }
 
         // GET: Events/Edit/5
@@ -74,7 +84,14 @@ namespace TekConf.Controllers
             {
                 return HttpNotFound();
             }
-            return View(@event);
+            EventEditViewModel eventEditViewModel = new EventEditViewModel();
+            eventEditViewModel.Event = @event;
+            eventEditViewModel.selectedTechnologies = @event.Technology.ToList();
+            eventEditViewModel.technologies = DataAccess.Technology.GetTechnologiesList().Where(t => !@event.Technology.Select(e => e.id).Contains(t.id)).ToList();
+            List<string> speaker_event_user = @event.Event_AspNetUsers.Where(u => u.type == "speaker").Select(u => u.user_id).ToList();
+            eventEditViewModel.selectedSpeakers = db.AspNetUsers.Where(u => speaker_event_user.Contains(u.Id)).ToList();
+            eventEditViewModel.speakers = DataAccess.AspNetUsers.GetUsersList().Where(u => !speaker_event_user.Contains(u.Id)).ToList();
+            return View(eventEditViewModel);
         }
 
         // POST: Events/Edit/5
@@ -82,15 +99,34 @@ namespace TekConf.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,name,description,location,time,event_link,video_link")] Event @event)
+        public ActionResult Edit(Event @event, long[] technologies, string[] speakers)
         {
+            if (technologies == null)
+                technologies = new long[] { };
+            if (speakers == null)
+                speakers = new string[] { };
+
+            db.Event.Attach(@event);
+            db.Entry(@event).Collection("Technology").Load();
+            db.Entry(@event).Collection("Event_AspNetUsers").Load();
+            @event.Technology = db.Technology.Where(t => technologies.Contains(t.id)).ToList();
+            @event.Event_AspNetUsers = speakers.Select(s => new Event_AspNetUsers { user_id = s, event_id = @event.id, type = "speaker" }).ToList();
+            
             if (ModelState.IsValid)
             {
                 db.Entry(@event).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(@event);
+            
+            EventEditViewModel eventEditViewModel = new EventEditViewModel();
+            eventEditViewModel.Event = @event;
+            eventEditViewModel.selectedTechnologies = @event.Technology.ToList();
+            eventEditViewModel.technologies = DataAccess.Technology.GetTechnologiesList().Where(t => !@event.Technology.Select(e => e.id).Contains(t.id)).ToList();
+            List<string> speaker_event_user = @event.Event_AspNetUsers.Where(u => u.type == "speaker").Select(u => u.user_id).ToList();
+            eventEditViewModel.selectedSpeakers = db.AspNetUsers.Where(u => speaker_event_user.Contains(u.Id)).ToList();
+            eventEditViewModel.speakers = DataAccess.AspNetUsers.GetUsersList().Where(u => !speaker_event_user.Contains(u.Id)).ToList();
+            return View(eventEditViewModel);
         }
 
         // GET: Events/Delete/5

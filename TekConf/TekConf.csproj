@@ -179,11 +179,12 @@
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\AspNetUsers.cs" />
     <Compile Include="DataAccess\Technology.cs" />
     <Compile Include="Event.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Event_User.cs">
+    <Compile Include="Event_AspNetUsers.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">

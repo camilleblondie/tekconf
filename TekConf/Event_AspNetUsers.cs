@@ -12,7 +12,7 @@ namespace TekConf
     using System;
     using System.Collections.Generic;
     
-    public partial class Event_User
+    public partial class Event_AspNetUsers
     {
         public long event_id { get; set; }
         public string user_id { get; set; }

@@ -18,7 +18,7 @@ namespace TekConf
         {
             this.AspNetUserClaims = new HashSet<AspNetUserClaims>();
             this.AspNetUserLogins = new HashSet<AspNetUserLogins>();
-            this.Event_User = new HashSet<Event_User>();
+            this.Event_AspNetUsers = new HashSet<Event_AspNetUsers>();
             this.AspNetRoles = new HashSet<AspNetRoles>();
         }
     
@@ -41,7 +41,7 @@ namespace TekConf
     
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
-        public virtual ICollection<Event_User> Event_User { get; set; }
+        public virtual ICollection<Event_AspNetUsers> Event_AspNetUsers { get; set; }
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
     }
 }

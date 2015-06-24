@@ -31,7 +31,7 @@ namespace TekConf
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Event> Event { get; set; }
-        public virtual DbSet<Event_User> Event_User { get; set; }
+        public virtual DbSet<Event_AspNetUsers> Event_AspNetUsers { get; set; }
         public virtual DbSet<Technology> Technology { get; set; }
     }
 }

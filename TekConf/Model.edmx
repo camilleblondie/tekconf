@@ -82,15 +82,7 @@
           <Property Name="event_link" Type="nvarchar" MaxLength="255" />
           <Property Name="video_link" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="Event_Technology">
-          <Key>
-            <PropertyRef Name="event_id" />
-            <PropertyRef Name="technology_id" />
-          </Key>
-          <Property Name="event_id" Type="bigint" Nullable="false" />
-          <Property Name="technology_id" Type="bigint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Event_User">
+        <EntityType Name="Event_AspNetUsers">
           <Key>
             <PropertyRef Name="event_id" />
             <PropertyRef Name="user_id" />
@@ -98,6 +90,14 @@
           <Property Name="event_id" Type="bigint" Nullable="false" />
           <Property Name="user_id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Event_Technology">
+          <Key>
+            <PropertyRef Name="event_id" />
+            <PropertyRef Name="technology_id" />
+          </Key>
+          <Property Name="event_id" Type="bigint" Nullable="false" />
+          <Property Name="technology_id" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Technology">
           <Key>
@@ -188,24 +188,24 @@
         </Association>
         <Association Name="FK_event_user_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Event_User" Type="Self.Event_User" Multiplicity="*" />
+          <End Role="Event_AspNetUsers" Type="Self.Event_AspNetUsers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Event_User">
+            <Dependent Role="Event_AspNetUsers">
               <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_event_user_event">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
-          <End Role="Event_User" Type="Self.Event_User" Multiplicity="*" />
+          <End Role="Event_AspNetUsers" Type="Self.Event_AspNetUsers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Event">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="Event_User">
+            <Dependent Role="Event_AspNetUsers">
               <PropertyRef Name="event_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -218,8 +218,8 @@
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event_AspNetUsers" EntityType="Self.Event_AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Event_Technology" EntityType="Self.Event_Technology" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Event_User" EntityType="Self.Event_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Technology" EntityType="Self.Technology" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -247,11 +247,11 @@
           </AssociationSet>
           <AssociationSet Name="FK_event_user_AspNetUsers" Association="Self.FK_event_user_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Event_User" EntitySet="Event_User" />
+            <End Role="Event_AspNetUsers" EntitySet="Event_AspNetUsers" />
           </AssociationSet>
           <AssociationSet Name="FK_event_user_event" Association="Self.FK_event_user_event">
             <End Role="Event" EntitySet="Event" />
-            <End Role="Event_User" EntitySet="Event_User" />
+            <End Role="Event_AspNetUsers" EntitySet="Event_AspNetUsers" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -320,7 +320,7 @@
           <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="Event_User" Relationship="Self.FK_event_user_AspNetUsers" FromRole="AspNetUsers" ToRole="Event_User" />
+          <NavigationProperty Name="Event_AspNetUsers" Relationship="Self.FK_event_user_AspNetUsers" FromRole="AspNetUsers" ToRole="Event_AspNetUsers" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="Event">
@@ -334,10 +334,10 @@
           <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="event_link" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="video_link" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Event_User" Relationship="Self.FK_event_user_event" FromRole="Event" ToRole="Event_User" />
+          <NavigationProperty Name="Event_AspNetUsers" Relationship="Self.FK_event_user_event" FromRole="Event" ToRole="Event_AspNetUsers" />
           <NavigationProperty Name="Technology" Relationship="Self.Event_Technology" FromRole="Event" ToRole="Technology" />
         </EntityType>
-        <EntityType Name="Event_User">
+        <EntityType Name="Event_AspNetUsers">
           <Key>
             <PropertyRef Name="event_id" />
             <PropertyRef Name="user_id" />
@@ -345,8 +345,8 @@
           <Property Name="event_id" Type="Int64" Nullable="false" />
           <Property Name="user_id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_event_user_AspNetUsers" FromRole="Event_User" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Event" Relationship="Self.FK_event_user_event" FromRole="Event_User" ToRole="Event" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_event_user_AspNetUsers" FromRole="Event_AspNetUsers" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_event_user_event" FromRole="Event_AspNetUsers" ToRole="Event" />
         </EntityType>
         <EntityType Name="Technology">
           <Key>
@@ -386,24 +386,24 @@
         </Association>
         <Association Name="FK_event_user_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Event_User" Type="Self.Event_User" Multiplicity="*" />
+          <End Role="Event_AspNetUsers" Type="Self.Event_AspNetUsers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Event_User">
+            <Dependent Role="Event_AspNetUsers">
               <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_event_user_event">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
-          <End Role="Event_User" Type="Self.Event_User" Multiplicity="*" />
+          <End Role="Event_AspNetUsers" Type="Self.Event_AspNetUsers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Event">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="Event_User">
+            <Dependent Role="Event_AspNetUsers">
               <PropertyRef Name="event_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -416,14 +416,14 @@
           <End Role="Event" Type="Self.Event" Multiplicity="*" />
           <End Role="Technology" Type="Self.Technology" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="teckconfdbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="teckconfdbEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
           <EntitySet Name="Event" EntityType="Self.Event" />
-          <EntitySet Name="Event_User" EntityType="Self.Event_User" />
+          <EntitySet Name="Event_AspNetUsers" EntityType="Self.Event_AspNetUsers" />
           <EntitySet Name="Technology" EntityType="Self.Technology" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -435,11 +435,11 @@
           </AssociationSet>
           <AssociationSet Name="FK_event_user_AspNetUsers" Association="Self.FK_event_user_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Event_User" EntitySet="Event_User" />
+            <End Role="Event_AspNetUsers" EntitySet="Event_AspNetUsers" />
           </AssociationSet>
           <AssociationSet Name="FK_event_user_event" Association="Self.FK_event_user_event">
             <End Role="Event" EntitySet="Event" />
-            <End Role="Event_User" EntitySet="Event_User" />
+            <End Role="Event_AspNetUsers" EntitySet="Event_AspNetUsers" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
@@ -455,7 +455,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="teckconfdbModelStoreContainer" CdmEntityContainer="teckconfdbEntities">
+        <EntityContainerMapping StorageEntityContainer="teckconfdbModelStoreContainer" CdmEntityContainer="teckconfdbEntities1">
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="teckconfdbModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -528,9 +528,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Event_User">
-            <EntityTypeMapping TypeName="teckconfdbModel.Event_User">
-              <MappingFragment StoreEntitySet="Event_User">
+          <EntitySetMapping Name="Event_AspNetUsers">
+            <EntityTypeMapping TypeName="teckconfdbModel.Event_AspNetUsers">
+              <MappingFragment StoreEntitySet="Event_AspNetUsers">
                 <ScalarProperty Name="event_id" ColumnName="event_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="type" ColumnName="type" />
