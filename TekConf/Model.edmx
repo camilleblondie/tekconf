@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="teckconfdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -60,7 +70,7 @@
           <Property Name="Picture" Type="nvarchar" MaxLength="256" />
           <Property Name="Address" Type="nvarchar" MaxLength="256" />
         </EntityType>
-        <EntityType Name="event">
+        <EntityType Name="Event">
           <Key>
             <PropertyRef Name="id" />
           </Key>
@@ -72,7 +82,7 @@
           <Property Name="event_link" Type="nvarchar" MaxLength="255" />
           <Property Name="video_link" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="event_technology">
+        <EntityType Name="Event_Technology">
           <Key>
             <PropertyRef Name="event_id" />
             <PropertyRef Name="technology_id" />
@@ -80,7 +90,7 @@
           <Property Name="event_id" Type="bigint" Nullable="false" />
           <Property Name="technology_id" Type="bigint" Nullable="false" />
         </EntityType>
-        <EntityType Name="event_user">
+        <EntityType Name="Event_User">
           <Key>
             <PropertyRef Name="event_id" />
             <PropertyRef Name="user_id" />
@@ -89,7 +99,7 @@
           <Property Name="user_id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="technology">
+        <EntityType Name="Technology">
           <Key>
             <PropertyRef Name="id" />
           </Key>
@@ -153,63 +163,64 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_event_technology_event">
-          <End Role="event" Type="Self.event" Multiplicity="1" />
-          <End Role="event_technology" Type="Self.event_technology" Multiplicity="*" />
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="Event_Technology" Type="Self.Event_Technology" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="event">
+            <Principal Role="Event">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="event_technology">
+            <Dependent Role="Event_Technology">
               <PropertyRef Name="event_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_event_technology_technology">
-          <End Role="technology" Type="Self.technology" Multiplicity="1" />
-          <End Role="event_technology" Type="Self.event_technology" Multiplicity="*" />
+          <End Role="Technology" Type="Self.Technology" Multiplicity="1" />
+          <End Role="Event_Technology" Type="Self.Event_Technology" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="technology">
+            <Principal Role="Technology">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="event_technology">
+            <Dependent Role="Event_Technology">
               <PropertyRef Name="technology_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_event_user_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="event_user" Type="Self.event_user" Multiplicity="*" />
+          <End Role="Event_User" Type="Self.Event_User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="event_user">
+            <Dependent Role="Event_User">
               <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_event_user_event">
-          <End Role="event" Type="Self.event" Multiplicity="1" />
-          <End Role="event_user" Type="Self.event_user" Multiplicity="*" />
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="Event_User" Type="Self.Event_User" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="event">
+            <Principal Role="Event">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="event_user">
+            <Dependent Role="Event_User">
               <PropertyRef Name="event_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="teckconfdbModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="event" EntityType="Self.event" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="event_technology" EntityType="Self.event_technology" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="event_user" EntityType="Self.event_user" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="technology" EntityType="Self.technology" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event_Technology" EntityType="Self.Event_Technology" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event_User" EntityType="Self.Event_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Technology" EntityType="Self.Technology" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -227,20 +238,20 @@
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_event_technology_event" Association="Self.FK_event_technology_event">
-            <End Role="event" EntitySet="event" />
-            <End Role="event_technology" EntitySet="event_technology" />
+            <End Role="Event" EntitySet="Event" />
+            <End Role="Event_Technology" EntitySet="Event_Technology" />
           </AssociationSet>
           <AssociationSet Name="FK_event_technology_technology" Association="Self.FK_event_technology_technology">
-            <End Role="technology" EntitySet="technology" />
-            <End Role="event_technology" EntitySet="event_technology" />
+            <End Role="Technology" EntitySet="Technology" />
+            <End Role="Event_Technology" EntitySet="Event_Technology" />
           </AssociationSet>
           <AssociationSet Name="FK_event_user_AspNetUsers" Association="Self.FK_event_user_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="event_user" EntitySet="event_user" />
+            <End Role="Event_User" EntitySet="Event_User" />
           </AssociationSet>
           <AssociationSet Name="FK_event_user_event" Association="Self.FK_event_user_event">
-            <End Role="event" EntitySet="event" />
-            <End Role="event_user" EntitySet="event_user" />
+            <End Role="Event" EntitySet="Event" />
+            <End Role="Event_User" EntitySet="Event_User" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -248,6 +259,16 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="teckconfdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -299,10 +320,10 @@
           <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="event_user" Relationship="Self.FK_event_user_AspNetUsers" FromRole="AspNetUsers" ToRole="event_user" />
+          <NavigationProperty Name="Event_User" Relationship="Self.FK_event_user_AspNetUsers" FromRole="AspNetUsers" ToRole="Event_User" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
-        <EntityType Name="event">
+        <EntityType Name="Event">
           <Key>
             <PropertyRef Name="id" />
           </Key>
@@ -313,10 +334,10 @@
           <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="event_link" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="video_link" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="event_user" Relationship="Self.FK_event_user_event" FromRole="event" ToRole="event_user" />
-          <NavigationProperty Name="technology" Relationship="Self.event_technology" FromRole="event" ToRole="technology" />
+          <NavigationProperty Name="Event_User" Relationship="Self.FK_event_user_event" FromRole="Event" ToRole="Event_User" />
+          <NavigationProperty Name="Technology" Relationship="Self.Event_Technology" FromRole="Event" ToRole="Technology" />
         </EntityType>
-        <EntityType Name="event_user">
+        <EntityType Name="Event_User">
           <Key>
             <PropertyRef Name="event_id" />
             <PropertyRef Name="user_id" />
@@ -324,16 +345,16 @@
           <Property Name="event_id" Type="Int64" Nullable="false" />
           <Property Name="user_id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_event_user_AspNetUsers" FromRole="event_user" ToRole="AspNetUsers" />
-          <NavigationProperty Name="event" Relationship="Self.FK_event_user_event" FromRole="event_user" ToRole="event" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_event_user_AspNetUsers" FromRole="Event_User" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_event_user_event" FromRole="Event_User" ToRole="Event" />
         </EntityType>
-        <EntityType Name="technology">
+        <EntityType Name="Technology">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="event" Relationship="Self.event_technology" FromRole="technology" ToRole="event" />
+          <NavigationProperty Name="Event" Relationship="Self.Event_Technology" FromRole="Technology" ToRole="Event" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -365,24 +386,24 @@
         </Association>
         <Association Name="FK_event_user_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="event_user" Type="Self.event_user" Multiplicity="*" />
+          <End Role="Event_User" Type="Self.Event_User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="event_user">
+            <Dependent Role="Event_User">
               <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_event_user_event">
-          <End Role="event" Type="Self.event" Multiplicity="1" />
-          <End Role="event_user" Type="Self.event_user" Multiplicity="*" />
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="Event_User" Type="Self.Event_User" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="event">
+            <Principal Role="Event">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="event_user">
+            <Dependent Role="Event_User">
               <PropertyRef Name="event_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -391,18 +412,19 @@
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
         </Association>
-        <Association Name="event_technology">
-          <End Role="event" Type="Self.event" Multiplicity="*" />
-          <End Role="technology" Type="Self.technology" Multiplicity="*" />
+        <Association Name="Event_Technology">
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <End Role="Technology" Type="Self.Technology" Multiplicity="*" />
         </Association>
         <EntityContainer Name="teckconfdbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
-          <EntitySet Name="event" EntityType="Self.event" />
-          <EntitySet Name="event_user" EntityType="Self.event_user" />
-          <EntitySet Name="technology" EntityType="Self.technology" />
+          <EntitySet Name="Event" EntityType="Self.Event" />
+          <EntitySet Name="Event_User" EntityType="Self.Event_User" />
+          <EntitySet Name="Technology" EntityType="Self.Technology" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -413,19 +435,19 @@
           </AssociationSet>
           <AssociationSet Name="FK_event_user_AspNetUsers" Association="Self.FK_event_user_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="event_user" EntitySet="event_user" />
+            <End Role="Event_User" EntitySet="Event_User" />
           </AssociationSet>
           <AssociationSet Name="FK_event_user_event" Association="Self.FK_event_user_event">
-            <End Role="event" EntitySet="event" />
-            <End Role="event_user" EntitySet="event_user" />
+            <End Role="Event" EntitySet="Event" />
+            <End Role="Event_User" EntitySet="Event_User" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <AssociationSet Name="event_technology" Association="Self.event_technology">
-            <End Role="event" EntitySet="event" />
-            <End Role="technology" EntitySet="technology" />
+          <AssociationSet Name="Event_Technology" Association="Self.Event_Technology">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="Technology" EntitySet="Technology" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -434,6 +456,16 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="teckconfdbModelStoreContainer" CdmEntityContainer="teckconfdbEntities">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="teckconfdbModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="teckconfdbModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
@@ -483,9 +515,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="event">
-            <EntityTypeMapping TypeName="teckconfdbModel.event">
-              <MappingFragment StoreEntitySet="event">
+          <EntitySetMapping Name="Event">
+            <EntityTypeMapping TypeName="teckconfdbModel.Event">
+              <MappingFragment StoreEntitySet="Event">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="description" ColumnName="description" />
@@ -496,18 +528,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="event_user">
-            <EntityTypeMapping TypeName="teckconfdbModel.event_user">
-              <MappingFragment StoreEntitySet="event_user">
+          <EntitySetMapping Name="Event_User">
+            <EntityTypeMapping TypeName="teckconfdbModel.Event_User">
+              <MappingFragment StoreEntitySet="Event_User">
                 <ScalarProperty Name="event_id" ColumnName="event_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="type" ColumnName="type" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="technology">
-            <EntityTypeMapping TypeName="teckconfdbModel.technology">
-              <MappingFragment StoreEntitySet="technology">
+          <EntitySetMapping Name="Technology">
+            <EntityTypeMapping TypeName="teckconfdbModel.Technology">
+              <MappingFragment StoreEntitySet="Technology">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
@@ -521,11 +553,11 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="event_technology" TypeName="teckconfdbModel.event_technology" StoreEntitySet="event_technology">
-            <EndProperty Name="event">
+          <AssociationSetMapping Name="Event_Technology" TypeName="teckconfdbModel.Event_Technology" StoreEntitySet="Event_Technology">
+            <EndProperty Name="Event">
               <ScalarProperty Name="id" ColumnName="event_id" />
             </EndProperty>
-            <EndProperty Name="technology">
+            <EndProperty Name="Technology">
               <ScalarProperty Name="id" ColumnName="technology_id" />
             </EndProperty>
           </AssociationSetMapping>
@@ -546,7 +578,7 @@
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

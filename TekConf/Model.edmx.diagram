@@ -4,20 +4,21 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bff548087ded4423b81864fb194ecf12" Name="Diagram1" ZoomLevel="81">
+      <Diagram DiagramId="f771e50ba7af4418a0eb3ba5441ce87d" Name="Diagram1" ZoomLevel="95">
+        <EntityTypeShape EntityType="teckconfdbModel.C__MigrationHistory" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="teckconfdbModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="teckconfdbModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="teckconfdbModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="teckconfdbModel.AspNetUsers" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="teckconfdbModel.event" Width="1.5" PointX="6" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="teckconfdbModel.event_user" Width="1.5" PointX="8.25" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="teckconfdbModel.technology" Width="1.5" PointX="8.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="teckconfdbModel.Event" Width="1.5" PointX="6" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="teckconfdbModel.Event_User" Width="1.5" PointX="8.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="teckconfdbModel.Technology" Width="1.5" PointX="8.25" PointY="10" IsExpanded="true" />
         <AssociationConnector Association="teckconfdbModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="teckconfdbModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="teckconfdbModel.FK_event_user_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="teckconfdbModel.FK_event_user_event" ManuallyRouted="false" />
         <AssociationConnector Association="teckconfdbModel.AspNetUserRoles" ManuallyRouted="false" />
-        <AssociationConnector Association="teckconfdbModel.event_technology" ManuallyRouted="false" />
+        <AssociationConnector Association="teckconfdbModel.Event_Technology" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
