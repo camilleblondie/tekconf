@@ -30,11 +30,20 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    @if (@ViewContext.RouteData.Values["action"].ToString() == "Index")
+    {
+        <div class="jumbotron jumbotron-background">
+            <h1>Welcome on <span class="text-white">Tek</span>Conf!</h1>
+            <p class="lead">Discover tech events around you!</p>
+            <p>@Html.ActionLink("Get Started!", "Register", "Account", new { area = "" }, new { @class = "btn btn-primary btn-lg" })</p>
+        </div>
+    }
+    
+    <div class="container-fluid body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>TekConf &copy; @DateTime.Now.Year</p>
         </footer>
     </div>
 

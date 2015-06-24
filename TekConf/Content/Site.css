@@ -22,3 +22,36 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.jumbotron-background {
+    background-image: url("http://www.cadmiumcd.com/cadmiumcd/custom/images/blog/attendee-perspective/conference-attendee.jpg");
+    height: 500px;
+    background-position: 0% 18%;
+}
+
+.jumbotron {
+    text-align: center;
+}
+
+.jumbotron h1 {
+    color: rgb(66, 139, 202);
+    text-shadow: 2px 2px 5px #5A5A5A;
+}
+
+.jumbotron .lead {
+    margin-top: 74px;
+}
+
+.first-image-background {
+    background-image: url('http://www.alsacreations.com/xmedia/doc/full/google-map.png');
+    background-size: cover;
+    height: 250px;
+}
+
+.gap {
+    margin-top: 30px;
+}
+
+.text-white {
+    color: white;
+}
