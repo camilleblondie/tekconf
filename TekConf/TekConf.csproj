@@ -176,9 +176,6 @@
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="C__MigrationHistory.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataAccess\AspNetUsers.cs" />
     <Compile Include="DataAccess\Technology.cs" />
     <Compile Include="Event.cs">

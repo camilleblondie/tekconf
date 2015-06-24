@@ -20,4 +20,12 @@ namespace TekConf.Models
         public List<AspNetUsers> selectedSpeakers { get; set; }
         public List<AspNetUsers> speakers { get; set; }
     }
+
+    public class EventDetailsViewModel
+    {
+        public Event Event { get; set; }
+        public List<AspNetUsers> speakers { get; set; }
+        public List<AspNetUsers> attendees { get; set; }
+        public List<Technology> technologies { get; set; }
+    }
 }
