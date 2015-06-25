@@ -1,69 +1,106 @@
-﻿@model TekConf.Event
+﻿@model TekConf.Models.EventEditViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Edit event</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Event</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.Event.id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Event.name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Event.name, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Event.description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Event.description, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.location, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.location, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.location, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.location, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Event.location, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Event.location, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.time, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.time, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.time, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.time, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Event.time, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Event.time, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.event_link, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.event_link, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.event_link, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.event_link, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Event.event_link, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Event.event_link, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.video_link, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.video_link, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.video_link, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.video_link, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Event.video_link, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Event.video_link, "", new { @class = "text-danger" })
             </div>
         </div>
+
+
+        <h4>Technologies</h4>
+        <hr />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <select class="js-example-basic-multiple" multiple="multiple" name="technologies[]">
+                    @foreach (Technology t in Model.selectedTechnologies)
+                    {
+                        <option selected="selected" value="@t.id">@t.name</option>
+                    }
+                    @foreach (Technology t in Model.technologies)
+                    {
+                        <option value="@t.id">@t.name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <h4>Speakers</h4>
+        <hr />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <select class="js-example-basic-multiple" multiple="multiple" name="speakers[]">
+                    @foreach (AspNetUsers u in Model.selectedSpeakers)
+                    {
+                        <option selected="selected" value="@u.Id">@(u.Firstname + " " + u.Lastname)</option>
+                    }
+                    @foreach (AspNetUsers u in Model.speakers)
+                    {
+                        <option value="@u.Id">@(u.Firstname + " " + u.Lastname)</option>
+                    }
+                </select>
+            </div>
+        </div>
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -74,7 +111,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to events", "Index")
 </div>
 
 @section Scripts {
