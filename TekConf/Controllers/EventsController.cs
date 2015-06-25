@@ -19,7 +19,25 @@ namespace TekConf.Controllers
         // GET: Events
         public ActionResult Index()
         {
-            return View(db.Event.ToList());
+            ViewBag.technologies = DataAccess.Technology.GetTechnologiesList();
+            return View();
+        }
+
+        // POST: Search
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Search(string Near, int? Month, int? Year, long[] technologies, string Topic)
+        {
+            IQueryable<Event> queryable = db.Event.Where(e => e.time > System.DateTime.Now);
+            if (Month != null)
+                queryable = queryable.Where(e => e.time.Month == Month);
+            if (Year != null)
+                queryable = queryable.Where(e => e.time.Year == Year);
+            if (!String.IsNullOrEmpty(Topic))
+                queryable = queryable.Where(e => e.name.ToLower().Contains(Topic));
+            if (technologies != null)
+                queryable = queryable.Where(e => technologies.Any(t => e.Technology.Select(et => et.id).Contains(t)));
+            return Json(queryable.ToList());
         }
 
         // GET: Events/Details/5
