@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -37,7 +38,14 @@ namespace TekConf.Controllers
                 queryable = queryable.Where(e => e.name.ToLower().Contains(Topic));
             if (technologies != null)
                 queryable = queryable.Where(e => technologies.Any(t => e.Technology.Select(et => et.id).Contains(t)));
-            return Json(queryable.ToList());
+            var list = queryable.Select(ev => new
+            {
+                ev.id,
+                ev.name,
+                ev.time,
+                ev.description
+            }).ToList();
+            return Content(JsonConvert.SerializeObject(list), "application/json");
         }
 
         // GET: Events/Details/5

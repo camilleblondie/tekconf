@@ -42,8 +42,8 @@
                     <option value="12">December</option>
                 </select>
                 <select name="Year" class="form-control">
-                    <option selected="selected"></option>
-                    <option value="2015">2015</option>
+                    <!--<option selected="selected"></option>-->
+                    <option value="2015" selected="selected">2015</option>
                     <option value="2016">2016</option>
                     <option value="2017">2017</option>
                     <option value="2018">2018</option>
@@ -108,19 +108,19 @@
         $('#searchSubmit').click(function (e) {
             e.preventDefault();
             console.log($('#searchForm').serialize());
-            $.post("/Events/Search", $('#searchForm').serialize(), function (data) {
-                console.log(data);
+            $.post('/Events/Search', $('#searchForm').serialize(), function (data) {
                 $("#results").empty();
                 if (data.length <= 0)
                     $("#results").append('No event found!');
                 for (i = 0; i < data.length; ++i)
                 {
                     var ev = data[i];
+                    var eventDate = new Date(ev.time);
                     $("#results").append('<a href="/Events/Details/' + ev.id + '" class="list-group-item"> \
                         <div class="row"> \
                             <div class="col-md-9"> \
                                 <h4 class="list-group-item-heading">'
-                                    + ev.name + ' <small>' + new Date(parseInt(ev.time.substr(6))) + '</small> \
+                                    + ev.name + ' <small>' + eventDate.getDate() + "/" + eventDate.getMonth() + "/" +eventDate.getFullYear() + '</small> \
                                 </h4> \
                                 <p class="list-group-item-text">' + ev.description + '</p> \
                             </div> \
