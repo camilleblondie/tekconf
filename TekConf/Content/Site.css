@@ -55,3 +55,12 @@ textarea {
 .text-white {
     color: white;
 }
+
+.see-more-btn {
+    margin-top: 10px;
+}
+
+.thumbnail-menu {
+    width: 40px;
+    margin-top: 5px;
+}

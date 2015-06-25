@@ -84,6 +84,7 @@ namespace TekConf.Controllers
         }
 
         // GET: Events/Create
+        [Authorize]
         public ActionResult Create()
         {
             EventCreateViewModel eventCreateViewModel = new EventCreateViewModel();
@@ -96,6 +97,7 @@ namespace TekConf.Controllers
         // POST: Events/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Event @event, long[] technologies, string[] speakers)
@@ -120,6 +122,7 @@ namespace TekConf.Controllers
         }
 
         // GET: Events/Edit/5
+        [Authorize]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -144,6 +147,7 @@ namespace TekConf.Controllers
         // POST: Events/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Event @event, long[] technologies, string[] speakers)
@@ -174,32 +178,6 @@ namespace TekConf.Controllers
             eventEditViewModel.selectedSpeakers = db.AspNetUsers.Where(u => speaker_event_user.Contains(u.Id)).ToList();
             eventEditViewModel.speakers = DataAccess.AspNetUsers.GetUsersList().Where(u => !speaker_event_user.Contains(u.Id)).ToList();
             return View(eventEditViewModel);
-        }
-
-        // GET: Events/Delete/5
-        public ActionResult Delete(long? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Event @event = db.Event.Find(id);
-            if (@event == null)
-            {
-                return HttpNotFound();
-            }
-            return View(@event);
-        }
-
-        // POST: Events/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
-        {
-            Event @event = db.Event.Find(id);
-            db.Event.Remove(@event);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

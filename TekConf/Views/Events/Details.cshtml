@@ -3,20 +3,29 @@
 @{
     ViewBag.Title = "Event " + Model.Event.name;
 }
-<header class="text-center">
-    <h1>@Model.Event.name</h1>
-    <h5>On @Model.Event.time.Date.ToShortDateString() at @Model.Event.time.TimeOfDay</h5>
-</header>
-<div class="gap"></div>
+
 <div class="container">
+    <header class="text-center">
+        <h1>@Model.Event.name</h1>
+        <h5>On @Model.Event.time.Date.ToShortDateString() at @Model.Event.time.TimeOfDay</h5>
+    </header>
+    <div class="gap"></div>
     <div class="row">
         <div class="col-md-8">
             <p>@Model.Event.description</p>
         </div>
         <div class="col-md-4">
-            <p><a href="@Model.Event.event_link">@Model.Event.event_link</a></p>
-            <p>@Model.attendees.Count attendees</p>
-            <a href="#">Add to my Google Calendar</a>
+            <p>
+                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                <a href="@Model.Event.event_link">@Model.Event.event_link</a>
+            </p>
+            <p>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                @Model.attendees.Count attendees</p>
+            <p>
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                <a href="#">Add to my Google Calendar</a>
+            </p>
         </div>
     </div>
     <div class="gap"></div>
@@ -46,16 +55,49 @@
     <div class="gap"></div>
 
     <div class="row">
-        <div class="col-md-8">
-            <p>Google Maps</p>
+        <div class="col-md-8" style="height: 300px;">
+            <div id="map-canvas"></div>
         </div>
         <div class="col-md-4">
-            @Model.Event.location
+            <h4>Event address</h4>
+            <p>@Model.Event.location</p>
         </div>
     </div>
-
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Event.id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
 </div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var geocoder;
+        var map;
+        var center;
+        function initialize() {
+            geocoder = new google.maps.Geocoder();
+            codeAddress();
+            var mapOptions = {
+                center: center,
+                zoom: 12
+            };
+            map = new google.maps.Map(document.getElementById('map-canvas'),
+                mapOptions);
+        }
+
+        function codeAddress() {
+            var address = "@Model.Event.location";
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    center = results[0].geometry.location;
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    });
+</script>
