@@ -1,0 +1,87 @@
+﻿@model TekConf.Models.DashboardViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<header class="text-center">
+    <h1>Dashboard</h1>
+</header>
+
+<div class="container">
+    <div class="row">
+        <h3>My Events</h3>
+        <div class="col-md-6">
+            <div class="list-group">
+                @foreach (Event e in Model.events)
+                {
+                    <a href="@Url.Action("Details", "Events", new { id = @e.id })" class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h4 class="list-group-item-heading">@e.name <small>@e.time.Date.ToShortDateString() at @e.time.TimeOfDay.ToString("hh':'mm")</small></h4>
+                                <p class="list-group-item-text">@e.description</p>
+                            </div>
+                            <div class="col-md-3 see-more-btn">
+                                <p class="btn btn-primary btn-sm">
+                                    See More
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h3>My profile</h3>
+
+        @using (Html.BeginForm("UpdateProfile", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.HiddenFor(model => model.user.Id)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.user.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.user.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.user.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.user.Firstname, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.user.Firstname, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.user.Firstname, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.user.Lastname, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.user.Lastname, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.user.Lastname, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.user.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.user.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.user.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Avatar", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input class="form-control" type="file" id="Avatar" name="Picture" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Update my profile" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+      </div>
+</div>
+

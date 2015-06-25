@@ -4,10 +4,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mon application ASP.NET</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
     <link href="~/Content/select2.min.css" rel="stylesheet" />
+    <style type="text/css">
+        #map-canvas {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false">
+    </script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,14 +33,15 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Events", "About", "Home")</li>
-                    <li>@Html.ActionLink("Speakers", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Events", "Index", "Events")</li>
+                    @*<li>@Html.ActionLink("Speakers", "Contact", "Home")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
-    @if (@ViewContext.RouteData.Values["action"].ToString() == "Index")
+    @if (@ViewContext.RouteData.Values["action"].ToString() == "Index" &&
+        @ViewContext.RouteData.Values["controller"].ToString() == "Home")
     {
         <div class="jumbotron jumbotron-background">
             <h1>Welcome on <span class="text-white">Tek</span>Conf!</h1>
@@ -47,7 +58,6 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     <script src="~/Scripts/select2.min.js"></script>
