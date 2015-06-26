@@ -123,11 +123,13 @@
                 {
                     var ev = data[i];
                     var eventDate = new Date(ev.time);
+                    var eventDateMonth = eventDate.getMonth() + 1;
+                    console.log("eventdate: " + eventDate);
                     $("#results").append('<a href="/Events/Details/' + ev.id + '" class="list-group-item"> \
                         <div class="row"> \
                             <div class="col-md-9"> \
                                 <h4 class="list-group-item-heading">'
-                                    + ev.name + ' <small>' + eventDate.getDate() + "/" + eventDate.getMonth() + "/" +eventDate.getFullYear() + '</small> \
+                                    + ev.name + ' <small>' + eventDate.getDate() + "/" + eventDateMonth + "/" + eventDate.getFullYear() + '</small> \
                                 </h4> \
                                 <p class="list-group-item-text">' + ev.description + '</p> \
                             </div> \
