@@ -126,6 +126,7 @@ namespace TekConf.Controllers
             EventCreateViewModel eventCreateViewModel = new EventCreateViewModel();
             eventCreateViewModel.Event = @event;
             eventCreateViewModel.technologies = DataAccess.Technology.GetTechnologiesList();
+            eventCreateViewModel.speakers = DataAccess.AspNetUsers.GetUsersList();
             return View(eventCreateViewModel);
         }
 

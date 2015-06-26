@@ -9,6 +9,10 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     <link href="~/Content/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.css" />
+    <script type="text/javascript" src="~/Scripts/moment.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.js"></script>
     <style type="text/css">
         #map-canvas {
             height: 100%;
@@ -16,8 +20,7 @@
             padding: 0;
         }
     </style>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false">
-    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">

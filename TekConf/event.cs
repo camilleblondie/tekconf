@@ -11,6 +11,7 @@ namespace TekConf
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Event
     {
@@ -24,6 +25,8 @@ namespace TekConf
         public string name { get; set; }
         public string description { get; set; }
         public string location { get; set; }
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public System.DateTime time { get; set; }
         public string event_link { get; set; }
         public string video_link { get; set; }

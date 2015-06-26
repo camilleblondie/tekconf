@@ -32,7 +32,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Event.location, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.location, htmlAttributes: new { @class = "control-label col-md-2" , id = "location"})
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Event.location, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Event.location, "", new { @class = "text-danger" })
@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Event.time, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Event.time, new { htmlAttributes = new { @class = "form-control", @Value = "" } })
+                @Html.EditorFor(model => model.Event.time, new { htmlAttributes = new { @class = "form-control datetimepicker", @Value = "" } })
                 @Html.ValidationMessageFor(model => model.Event.time, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -104,6 +104,22 @@
     @Html.ActionLink("Back to events", "Index")
 </div>
 
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    $(function () {
+        $('.datetimepicker').datetimepicker({ format: "DD/MM/YYYY HH:mm" });
+
+        var input = document.getElementById('Event_location');
+        var options = {
+        };
+
+        autocomplete = new google.maps.places.Autocomplete(input, options);
+    });
+
+
+</script>
 }
