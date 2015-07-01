@@ -81,6 +81,19 @@
         </div>
     }
 
+
+    <div class="gap"></div>
+
+    <div class="row">
+        <div class="col-md-8" style="height: 300px;">
+            <div id="map-canvas"></div>
+        </div>
+        <div class="col-md-4">
+            <h4>Event address</h4>
+            <p>#YOLO</p>
+        </div>
+    </div>
+
     <h3>Results</h3>
 
     <div class="list-group" id="results">
@@ -106,14 +119,23 @@
 </div>
 
 <script type="text/javascript">
+    var geocoder;
+    var map;
+    var center;
+
     $(document).ready(function () {
         var input = document.getElementById('Event_location');
         var options = {
         };
         autocomplete = new google.maps.places.Autocomplete(input, options);
+        InitMap(true, 'Carqueiranne, France');
 
 
         $('#searchSubmit').click(function (e) {
+            var curAddress = $('#Event_location').val();
+            InitMap(false, curAddress);
+
+
             e.preventDefault();
             $.post('/Events/Search', $('#searchForm').serialize(), function (data) {
                 $("#results").empty();
@@ -140,4 +162,39 @@
             });
         });
     });
+
+    function InitMap(first, curAddress) {
+        if (first == true) {
+            function initialize() {
+                geocoder = new google.maps.Geocoder();
+                codeAddress(curAddress);
+                var mapOptions = {
+                    center: center,
+                    zoom: 12
+                };
+                map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+            }
+        } else {
+            codeAddress(curAddress);
+        }
+
+        function codeAddress(curAddress) {
+            var address = curAddress;
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    center = results[0].geometry.location;
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    };
 </script>
