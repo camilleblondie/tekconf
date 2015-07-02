@@ -7,6 +7,13 @@
 <div class="container">
     <header class="text-center">
         <h1>@Model.Event.name</h1>
+        @if (@User.Identity.IsAuthenticated) {
+            using (Html.BeginForm("Participate", "Events", new { id = Model.Event.id }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="submit" value="I'm in!" class="btn btn-success" />
+            }
+        }
         <h5>On @Model.Event.time.Date.ToShortDateString() at @Model.Event.time.TimeOfDay</h5>
     </header>
     <div class="gap"></div>
@@ -24,7 +31,7 @@
                 @Model.attendees.Count attendees</p>
             <p>
                 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                <a href="#">Add to my Google Calendar</a>
+                <a href="@Model.googleCalendarLink">Add to my Google Calendar</a>
             </p>
         </div>
     </div>

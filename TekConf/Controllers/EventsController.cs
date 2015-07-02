@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using TekConf;
 using TekConf.Models;
+using Microsoft.AspNet.Identity;
 
 namespace TekConf.Controllers
 {
@@ -47,6 +48,39 @@ namespace TekConf.Controllers
                 ev.location
             }).ToList();
             return Content(JsonConvert.SerializeObject(list), "application/json");
+        }
+        // POST : Events/Details/5 (to participate to an event)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Participate(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Event @event = db.Event.Find(id);
+            if (@event == null)
+            {
+                return HttpNotFound();
+            }
+            string currentUserId = User.Identity.GetUserId();
+            if (currentUserId == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Event_AspNetUsers event_AspNetUsers = db.Event_AspNetUsers.Where(u => u.event_id == @event.id && u.user_id == currentUserId).FirstOrDefault();
+            if (event_AspNetUsers == null)
+            {
+                event_AspNetUsers = new Event_AspNetUsers()
+                {
+                    event_id = @event.id,
+                    type = "attendee",
+                    user_id = currentUserId
+                };
+                db.Event_AspNetUsers.Add(event_AspNetUsers);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: Events/Details/5
@@ -87,7 +121,8 @@ namespace TekConf.Controllers
                 videoId = vimeoMatch.Groups[1].Value;
                 videoLink = "https://www.player.vimeo.com/video/" + videoId;
             }
-
+            eventDetailsViewModel.googleCalendarLink = "http://www.google.com/calendar/event?action=TEMPLATE&text=" +
+                HttpUtility.UrlEncode(@event.name) + "&dates=" + @event.time.ToString("yyyyMMddTHHmmss") + "/" + @event.time.AddHours(1).ToString("yyyyMMddTHHmmss") + "&location=" + HttpUtility.UrlEncode(@event.location) + "&details=" + HttpUtility.UrlEncode(@event.description) + "&sprop=website:tekconf.fr&sprop=name:TekConf";
             ViewBag.videoLink = videoLink;
             return View(eventDetailsViewModel);
         }
@@ -143,6 +178,12 @@ namespace TekConf.Controllers
             if (@event == null)
             {
                 return HttpNotFound();
+            }
+            string currentUserId = User.Identity.GetUserId();
+            Event_AspNetUsers event_AspNetUsers = db.Event_AspNetUsers.Where(u => u.event_id == @event.id && u.user_id == currentUserId).FirstOrDefault();
+            if (event_AspNetUsers == null)
+            {
+                return RedirectToAction("Index");
             }
             EventEditViewModel eventEditViewModel = new EventEditViewModel();
             eventEditViewModel.Event = @event;
