@@ -128,13 +128,14 @@
         var options = {
         };
         autocomplete = new google.maps.places.Autocomplete(input, options);
-        InitMap(true, 'Carqueiranne, France');
+        InitMap(true, '#yolo');
 
 
         $('#searchSubmit').click(function (e) {
-            var curAddress = $('#Event_location').val();
-            InitMap(false, curAddress);
-
+            var selectedAddress = 'no';
+            if ($('#Event_location').val())
+                selectedAddress = $('#Event_location').val();
+            console.log(selectedAddress);
 
             e.preventDefault();
             $.post('/Events/Search', $('#searchForm').serialize(), function (data) {
@@ -147,11 +148,15 @@
                     var eventDate = new Date(ev.time);
                     var eventDateMonth = eventDate.getMonth() + 1;
                     console.log("eventdate: " + eventDate);
-                    $("#results").append('<a href="/Events/Details/' + ev.id + '" class="list-group-item"> \
+                    console.log(ev.location);
+                    curAddress = ev.location;
+                    if (selectedAddress == 'no' || selectedAddress == curAddress) {
+                        InitMap(false, curAddress);
+                        $("#results").append('<a href="/Events/Details/' + ev.id + '" class="list-group-item"> \
                         <div class="row"> \
                             <div class="col-md-9"> \
                                 <h4 class="list-group-item-heading">'
-                                    + ev.name + ' <small>' + eventDate.getDate() + "/" + eventDateMonth + "/" + eventDate.getFullYear() + '</small> \
+                                        + ev.name + ' <small>' + eventDate.getDate() + "/" + eventDateMonth + "/" + eventDate.getFullYear() + '</small> \
                                 </h4> \
                                 <p class="list-group-item-text">' + ev.description + '</p> \
                             </div> \
@@ -160,8 +165,12 @@
                             </div> \
                         </div> \
                     </a>');
+                    }
                 }
             });
+            if (selectedAddress.length != 0) {
+                InitMap(false, curAddress);
+            }
         });
     });
 
@@ -169,7 +178,6 @@
         if (first == true) {
             function initialize() {
                 geocoder = new google.maps.Geocoder();
-                codeAddress(curAddress);
                 var mapOptions = {
                     center: center,
                     zoom: 12

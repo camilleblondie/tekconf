@@ -43,7 +43,8 @@ namespace TekConf.Controllers
                 ev.id,
                 ev.name,
                 ev.time,
-                ev.description
+                ev.description,
+                ev.location
             }).ToList();
             return Content(JsonConvert.SerializeObject(list), "application/json");
         }
