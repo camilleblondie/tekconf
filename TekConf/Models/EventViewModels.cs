@@ -27,5 +27,6 @@ namespace TekConf.Models
         public List<AspNetUsers> speakers { get; set; }
         public List<AspNetUsers> attendees { get; set; }
         public List<Technology> technologies { get; set; }
+        public string googleCalendarLink { get; set; }
     }
 }

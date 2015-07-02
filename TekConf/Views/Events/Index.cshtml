@@ -122,41 +122,91 @@
     var geocoder;
     var map;
     var center;
+    var refGeocode = 0;
+    var results = [];
+    var markersArray = [];
 
     $(document).ready(function () {
         var input = document.getElementById('Event_location');
         var options = {
         };
         autocomplete = new google.maps.places.Autocomplete(input, options);
-        InitMap(true, '#yolo');
+        InitMap(0, '#yolo');
 
 
         $('#searchSubmit').click(function (e) {
-            var selectedAddress = 'no';
-            if ($('#Event_location').val())
+            var selectedAddress = 'Paris, France';
+            refGeocode = 0;
+            if ($('#Event_location').val()) {
                 selectedAddress = $('#Event_location').val();
-            console.log(selectedAddress);
+            }
+            InitMap(3, selectedAddress);
 
             e.preventDefault();
             $.post('/Events/Search', $('#searchForm').serialize(), function (data) {
                 $("#results").empty();
                 if (data.length <= 0)
                     $("#results").append('No event found!');
-                for (i = 0; i < data.length; ++i)
-                {
+                results = [];
+                
+                for (i = 0; i < data.length; ++i) {
                     var ev = data[i];
-                    var eventDate = new Date(ev.time);
-                    var eventDateMonth = eventDate.getMonth() + 1;
-                    console.log("eventdate: " + eventDate);
-                    console.log(ev.location);
                     var curAddress = ev.location;
-                    if (selectedAddress == 'no' || selectedAddress == curAddress) {
-                        InitMap(false, curAddress);
-                        $("#results").append('<a href="/Events/Details/' + ev.id + '" class="list-group-item"> \
+                    InitMap(1, curAddress, ev);
+                }
+                setTimeout(function () {
+                    sortResult();
+                    InitMap(2, 'no');
+                }, heurMapT);
+            });
+        });
+    });
+
+    function InitMap(value, curAddress, ev) {
+        if (value == 0) {
+            function initialize() {
+                geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': 'Paris, France' }, function (mapsresults, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var start = mapsresults[0].geometry.location;
+                        var mapOptions = {
+                            center: start,
+                            zoom: 12
+                        };
+                        map = new google.maps.Map(document.getElementById('map-canvas'),
+                            mapOptions);
+                    } else {
+                        console.log(status);
+                    }
+                });
+            }
+        } else if (value == 1) {
+            sorting(curAddress, ev);
+        } else if (value == 2) {
+            codeAddress();
+        } else if (value == 3) {
+            getRefAddressAsGeocode(curAddress);
+        }
+
+        function codeAddress() {
+            for (var i = results.length - 1; i >= 0; i--) {
+                center = results[i][1];
+
+                map.setCenter(center);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: center
+                });
+                markersArray.push(marker);
+
+                var ev = results[i][3];
+                var eventDate = new Date(ev.time);
+                var eventDateMonth = eventDate.getMonth() + 1;
+                $("#results").prepend('<a href="/Events/Details/' + ev.id + '" class="list-group-item"> \
                         <div class="row"> \
                             <div class="col-md-9"> \
                                 <h4 class="list-group-item-heading">'
-                                        + ev.name + ' <small>' + eventDate.getDate() + "/" + eventDateMonth + "/" + eventDate.getFullYear() + '</small> \
+                                + ev.name + ' <small>' + eventDate.getDate() + "/" + eventDateMonth + "/" + eventDate.getFullYear() + " - " + ev.location +'</small> \
                                 </h4> \
                                 <p class="list-group-item-text">' + ev.description + '</p> \
                             </div> \
@@ -165,46 +215,66 @@
                             </div> \
                         </div> \
                     </a>');
-                    }
-                }
-            });
-            if (selectedAddress.length != 'no') {
-                InitMap(false, selectedAddress);
             }
-        });
-    });
-
-    function InitMap(first, curAddress) {
-        if (first == true) {
-            function initialize() {
-                geocoder = new google.maps.Geocoder();
-                var mapOptions = {
-                    center: center,
-                    zoom: 12
-                };
-                map = new google.maps.Map(document.getElementById('map-canvas'),
-                    mapOptions);
-            }
-        } else {
-            codeAddress(curAddress);
         }
 
-        function codeAddress(curAddress) {
-            var address = curAddress;
-            geocoder.geocode({ 'address': address }, function (results, status) {
+        function getRefAddressAsGeocode(refAddress) {
+            geocoder.geocode({ 'address': refAddress }, function (mapsresults, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    center = results[0].geometry.location;
-                    map.setCenter(results[0].geometry.location);
-                    var marker = new google.maps.Marker({
-                        map: map,
-                        position: results[0].geometry.location
-                    });
+                    refGeocode = mapsresults[0].geometry.location;
                 } else {
-                    alert('Geocode was not successful for the following reason: ' + status);
+                    console.log(status);
+                }
+            });
+        }
+
+        function sorting(curAddress, ev) {
+            var address = curAddress;
+            geocoder.geocode({ 'address': address }, function (mapsresults, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    center = mapsresults[0].geometry.location;
+                    var distance = getDistance(refGeocode, center);
+                    var temp = [];
+                    temp.push(curAddress);
+                    temp.push(center);
+                    temp.push(distance);
+                    temp.push(ev);
+                    results.push(temp);
+                } else {
+                    alert('Sorry, but we didn\'t find the selected address. Try a new one !');
+                    console.log(status);
                 }
             });
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);
+    };
+    var heurMapT = 1523;
+
+    function heuristic(a, b) {
+        return a[2] - b[2];
+    }
+
+    function sortResult() {
+        results.sort(heuristic);
+    }
+
+    var rad = function (x) {
+        return x * Math.PI / 180;
+    };
+
+    function targetParis() {
+    }
+
+    var getDistance = function (p1, p2) {
+        var R = 6371000; // Earth’s mean radius in meter
+        var dLat = rad(p2.lat() - p1.lat());
+        var dLong = rad(p2.lng() - p1.lng());
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(rad(p1.lat())) * Math.cos(rad(p2.lat())) *
+          Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+        return d; // returns the distance in meter
     };
 </script>
