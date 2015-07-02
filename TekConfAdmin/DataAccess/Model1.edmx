@@ -416,7 +416,7 @@
           <End Role="Event" Type="Self.Event" Multiplicity="*" />
           <End Role="Technology" Type="Self.Technology" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="teckconfdbEntities" annotation:LazyLoadingEnabled="false">
+        <EntityContainer Name="teckconfdbEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
@@ -455,7 +455,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="teckconfdbModelStoreContainer" CdmEntityContainer="teckconfdbEntities">
+        <EntityContainerMapping StorageEntityContainer="teckconfdbModelStoreContainer" CdmEntityContainer="teckconfdbEntities1">
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="teckconfdbModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -578,7 +578,7 @@
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

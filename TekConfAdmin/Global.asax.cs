@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Infrastructure;
 using System.Web;
 using System.Web.DynamicData;
 using System.Web.Routing;
 using System.Web.UI;
+using TekConfAdmin.DataAccess;
 
 namespace TekConfAdmin
 {
@@ -33,8 +35,12 @@ namespace TekConfAdmin
             // {
             //    return ((IObjectContextAdapter)new YourDataContextType()).ObjectContext;
             // }, new ContextConfiguration() { ScaffoldAllTables = false });
-            DefaultModel.RegisterContext(typeof(TekConf.teckconfdbEntities)
-             , new ContextConfiguration() { ScaffoldAllTables = true });
+            DefaultModel.RegisterContext(() =>
+            {
+                return ((IObjectContextAdapter)new DataAccess.teckconfdbEntities()).ObjectContext;
+            }, new ContextConfiguration() { ScaffoldAllTables = true });
+
+
             // L’enregistrement suivant doit être utilisé si  YourDataContextType ne dérive pas de DbContext
             // DefaultModel.RegisterContext(typeof(YourDataContextType), new ContextConfiguration() { ScaffoldAllTables = false });
 
