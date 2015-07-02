@@ -81,6 +81,5 @@ namespace TekConfAdmin
             RegisterRoutes(RouteTable.Routes);
             RegisterScripts();
         }
-
     }
 }

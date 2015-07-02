@@ -124,6 +124,7 @@
     var center;
     var refGeocode = 0;
     var results = [];
+    var markersArray = [];
 
     $(document).ready(function () {
         var input = document.getElementById('Event_location');
@@ -165,12 +166,19 @@
         if (value == 0) {
             function initialize() {
                 geocoder = new google.maps.Geocoder();
-                var mapOptions = {
-                    center: center,
-                    zoom: 12
-                };
-                map = new google.maps.Map(document.getElementById('map-canvas'),
-                    mapOptions);
+                geocoder.geocode({ 'address': 'Paris, France' }, function (mapsresults, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var start = mapsresults[0].geometry.location;
+                        var mapOptions = {
+                            center: start,
+                            zoom: 12
+                        };
+                        map = new google.maps.Map(document.getElementById('map-canvas'),
+                            mapOptions);
+                    } else {
+                        console.log(status);
+                    }
+                });
             }
         } else if (value == 1) {
             sorting(curAddress, ev);
@@ -189,6 +197,7 @@
                     map: map,
                     position: center
                 });
+                markersArray.push(marker);
 
                 var ev = results[i][3];
                 var eventDate = new Date(ev.time);
@@ -253,6 +262,9 @@
     var rad = function (x) {
         return x * Math.PI / 180;
     };
+
+    function targetParis() {
+    }
 
     var getDistance = function (p1, p2) {
         var R = 6371000; // Earth’s mean radius in meter
