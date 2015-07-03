@@ -131,6 +131,7 @@
 
 
         $('#searchSubmit').click(function (e) {
+            e.preventDefault();
             var selectedAddress = 'Paris, France';
             refGeocode = 0;
             if ($('#Event_location').val()) {
@@ -138,7 +139,7 @@
             }
             InitMap(3, selectedAddress);
 
-            e.preventDefault();
+            
             $.post('/Events/Search', $('#searchForm').serialize(), function (data) {
                 $("#results").empty();
                 if (data.length <= 0)
