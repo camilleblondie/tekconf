@@ -9,35 +9,31 @@ namespace TekConf.DataAccess
     {
         public static List<TekConf.Event> GetEventsList()
         {
-            using (teckconfdbEntities db = new teckconfdbEntities())
+            try
             {
-                try
-                {
-                    return db.Event.ToList();
-                }
-                catch (Exception)
-                {
-                    return new List<TekConf.Event>();
-                }
+                teckconfdbEntities db = new teckconfdbEntities();
+                return db.Event.ToList();
+            }
+            catch (Exception)
+            {
+                return new List<TekConf.Event>();
             }
         }
 
         public static List<TekConf.Event> GetLastEventsList(int nb)
         {
-            using (teckconfdbEntities db = new teckconfdbEntities())
+            try
             {
-                try
-                {
-                    List<TekConf.Event> events = db.Event.OrderBy(i => i.time).ToList();
-                    events.Reverse();
-                    if (events.Count > nb)
-                        return events.Take(nb).ToList();
-                    return events;
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                teckconfdbEntities db = new teckconfdbEntities();
+                List<TekConf.Event> events = db.Event.OrderBy(i => i.time).ToList();
+                events.Reverse();
+                if (events.Count > nb)
+                    return events.Take(nb).ToList();
+                return events;
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
     }
