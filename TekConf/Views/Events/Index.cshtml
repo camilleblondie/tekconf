@@ -132,13 +132,12 @@
 
         $('#searchSubmit').click(function (e) {
             e.preventDefault();
-            var selectedAddress = 'Paris, France';
+            var selectedAddress = 'no';
             refGeocode = 0;
             if ($('#Event_location').val()) {
                 selectedAddress = $('#Event_location').val();
             }
             InitMap(3, selectedAddress);
-
             
             $.post('/Events/Search', $('#searchForm').serialize(), function (data) {
                 $("#results").empty();
@@ -148,6 +147,8 @@
                 
                 for (i = 0; i < data.length; ++i) {
                     var ev = data[i];
+                    if (selectedAddress == 'no')
+                        selectedAddress = ev.location;
                     var curAddress = ev.location;
                     InitMap(1, curAddress, ev);
                 }
@@ -239,7 +240,6 @@
                     temp.push(ev);
                     results.push(temp);
                 } else {
-                    alert('Sorry, but we didn\'t find the selected address. Try a new one !');
                     console.log(status);
                 }
             });
