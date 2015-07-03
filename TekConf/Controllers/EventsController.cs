@@ -106,20 +106,23 @@ namespace TekConf.Controllers
             eventDetailsViewModel.technologies = @event.Technology.ToList();
             Regex youtubeRegex = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
             Regex vimeoRegex = new Regex(@"vimeo\.com/(?:.*#|.*/videos/)?([0-9]+)");
-            Match youtubeMatch = youtubeRegex.Match(@event.video_link);
-            Match vimeoMatch = vimeoRegex.Match(@event.video_link);
             string videoId = "";
             string videoLink = "";
+            if (!String.IsNullOrEmpty(@event.video_link))
+            {
+                Match youtubeMatch = youtubeRegex.Match(@event.video_link);
+                Match vimeoMatch = vimeoRegex.Match(@event.video_link);
 
-            if (youtubeMatch.Success)
-            {
-                videoId = youtubeMatch.Groups[1].Value;
-                videoLink = "https://www.youtube.com/embed/" + videoId;
-            }
-            if (vimeoMatch.Success)
-            {
-                videoId = vimeoMatch.Groups[1].Value;
-                videoLink = "https://www.player.vimeo.com/video/" + videoId;
+                if (youtubeMatch.Success)
+                {
+                    videoId = youtubeMatch.Groups[1].Value;
+                    videoLink = "https://www.youtube.com/embed/" + videoId;
+                }
+                if (vimeoMatch.Success)
+                {
+                    videoId = vimeoMatch.Groups[1].Value;
+                    videoLink = "https://www.player.vimeo.com/video/" + videoId;
+                }
             }
             eventDetailsViewModel.googleCalendarLink = "http://www.google.com/calendar/event?action=TEMPLATE&text=" +
                 HttpUtility.UrlEncode(@event.name) + "&dates=" + @event.time.ToString("yyyyMMddTHHmmss") + "/" + @event.time.AddHours(1).ToString("yyyyMMddTHHmmss") + "&location=" + HttpUtility.UrlEncode(@event.location) + "&details=" + HttpUtility.UrlEncode(@event.description) + "&sprop=website:tekconf.fr&sprop=name:TekConf";
@@ -213,14 +216,14 @@ namespace TekConf.Controllers
             db.Entry(@event).Collection("Event_AspNetUsers").Load();
             @event.Technology = db.Technology.Where(t => technologies.Contains(t.id)).ToList();
             @event.Event_AspNetUsers = speakers.Select(s => new Event_AspNetUsers { user_id = s, event_id = @event.id, type = "speaker" }).ToList();
-            
+
             if (ModelState.IsValid)
             {
                 db.Entry(@event).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            
+
             EventEditViewModel eventEditViewModel = new EventEditViewModel();
             eventEditViewModel.Event = @event;
             eventEditViewModel.selectedTechnologies = @event.Technology.ToList();
