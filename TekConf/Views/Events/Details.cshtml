@@ -7,11 +7,18 @@
 <div class="container">
     <header class="text-center">
         <h1>@Model.Event.name</h1>
-        @if (@User.Identity.IsAuthenticated) {
-            using (Html.BeginForm("Participate", "Events", new { id = Model.Event.id }, FormMethod.Post))
-            {
+        @if (@User.Identity.IsAuthenticated)
+        {
+            <div style="display: inline-block;">
+                @using (Html.BeginForm("Participate", "Events", new { id = Model.Event.id }, FormMethod.Post))
+                {
                 @Html.AntiForgeryToken()
                 <input type="submit" value="I'm in!" class="btn btn-success" />
+                }
+            </div>
+            if (ViewBag.IsEventCreator != null && ViewBag.IsEventCreator == true)
+            {
+                <a href="~/Events/Edit/@Model.Event.id" class="btn btn-info">Edit</a>
             }
         }
         <h5>On @Model.Event.time.Date.ToShortDateString() at @Model.Event.time.TimeOfDay</h5>
@@ -28,7 +35,8 @@
             </p>
             <p>
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                @Model.attendees.Count attendees</p>
+                @Model.attendees.Count attendees
+            </p>
             <p>
                 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                 <a href="@Model.googleCalendarLink">Add to my Google Calendar</a>
@@ -36,11 +44,14 @@
         </div>
     </div>
     <div class="gap"></div>
-    <div class="row">
-        <div class="col-md-offset-1">
-            <iframe src="@ViewBag.videoLink" width="800" height="400"></iframe>
+    @if (!String.IsNullOrEmpty(ViewBag.videoLink))
+    {
+        <div class="row">
+            <div class="col-md-offset-1">
+                <iframe src="@ViewBag.videoLink" width="800" height="400"></iframe>
+            </div>
         </div>
-    </div>
+    }
     <div class="row">
         <h4>Speakers</h4>
         <ul>

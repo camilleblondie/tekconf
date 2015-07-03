@@ -95,6 +95,9 @@ namespace TekConf.Controllers
             {
                 return HttpNotFound();
             }
+            string currentUserId = User.Identity.GetUserId();
+            ViewBag.IsEventCreator = db.Event_AspNetUsers.Where(u => u.event_id == @event.id && u.user_id == currentUserId && u.type == "speaker" ).FirstOrDefault() != null;
+
             EventDetailsViewModel eventDetailsViewModel = new EventDetailsViewModel();
             eventDetailsViewModel.Event = @event;
             List<string> speaker_event_user = @event.Event_AspNetUsers.Where(u => u.type == "speaker").Select(u => u.user_id).ToList();
