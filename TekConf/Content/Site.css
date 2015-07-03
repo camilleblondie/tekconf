@@ -43,7 +43,19 @@ textarea {
 }
 
 .first-image-background {
-    background-image: url('http://www.alsacreations.com/xmedia/doc/full/google-map.png');
+    background-image: url('Images/Google Calendar Tekconf.PNG');
+    background-size: cover;
+    height: 250px;
+}
+
+.second-image-background {
+    background-image: url('Images/TekConf Map.PNG');
+    background-size: cover;
+    height: 250px;
+}
+
+.third-image-background {
+    background-image: url('Images/TekConf Techno.PNG');
     background-size: cover;
     height: 250px;
 }
@@ -63,4 +75,13 @@ textarea {
 .thumbnail-menu {
     width: 40px;
     margin-top: 5px;
+}
+
+.technology {
+    width: 280px;
+}
+
+.search-date {
+    display: inline-block;
+    width: auto;
 }

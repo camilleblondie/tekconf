@@ -38,10 +38,14 @@ namespace TekConf.Controllers
                 u.Lastname = user.Lastname;
                 u.Email = user.Email;
                 u.Address = user.Address;
-                u.Picture = user.Id + Path.GetExtension(Picture.FileName);
-                string downloadFilePath = System.Web.HttpContext.Current.Server.MapPath("/Downloads");
-                string savedFileName = Path.Combine(downloadFilePath, user.Id + Path.GetExtension(Picture.FileName));
-                Picture.SaveAs(savedFileName);
+                if (Picture != null)
+                {
+                    u.Picture = user.Id + Path.GetExtension(Picture.FileName);
+                    string downloadFilePath = System.Web.HttpContext.Current.Server.MapPath("/Downloads");
+                    string savedFileName = Path.Combine(downloadFilePath, user.Id + Path.GetExtension(Picture.FileName));
+                    Picture.SaveAs(savedFileName);
+                }
+
                 db.Entry(u).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

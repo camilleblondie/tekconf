@@ -12,11 +12,10 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Event</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Event.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.name, "Name of the event", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Event.name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Event.name, "", new { @class = "text-danger" })
@@ -24,7 +23,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Event.description, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.description, "Description", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Event.description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Event.description, "", new { @class = "text-danger" })
@@ -32,7 +31,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Event.location, htmlAttributes: new { @class = "control-label col-md-2" , id = "location"})
+            @Html.LabelFor(model => model.Event.location, "Location", htmlAttributes: new { @class = "control-label col-md-2" , id = "location"})
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Event.location, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Event.location, "", new { @class = "text-danger" })
@@ -40,7 +39,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Event.time, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.time, "Time of the event", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Event.time, new { htmlAttributes = new { @class = "form-control datetimepicker", @Value = "" } })
                 @Html.ValidationMessageFor(model => model.Event.time, "", new { @class = "text-danger" })
@@ -48,7 +47,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Event.event_link, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.event_link, "Website", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Event.event_link, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Event.event_link, "", new { @class = "text-danger" })
@@ -56,7 +55,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Event.video_link, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Event.video_link, "Video link", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Event.video_link, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Event.video_link, "", new { @class = "text-danger" })
@@ -68,7 +67,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <select class="js-example-basic-multiple" multiple="multiple" name="technologies[]">
+                <select class="technology js-example-basic-multiple" multiple="multiple" name="technologies[]">
                     @foreach (Technology t in Model.technologies)
                     {
                         <option value="@t.id">@t.name</option>
@@ -82,7 +81,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <select class="js-example-basic-multiple" multiple="multiple" name="speakers[]">
+                <select class="technology js-example-basic-multiple" multiple="multiple" name="speakers[]">
                     @foreach (AspNetUsers u in Model.speakers)
                     {
                         <option value="@u.Id">@(u.Firstname + " " + u.Lastname)</option>

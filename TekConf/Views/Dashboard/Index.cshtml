@@ -64,7 +64,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.user.Address, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.user.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.user.Address, new { htmlAttributes = new { @class = "form-control", id = "Event_location" } })
                         @Html.ValidationMessageFor(model => model.user.Address, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -85,3 +85,14 @@
       </div>
 </div>
 
+<script type="text/javascript">
+    $(function () {
+        var input = document.getElementById('Event_location');
+        var options = {
+        };
+
+        autocomplete = new google.maps.places.Autocomplete(input, options);
+    });
+
+
+</script>
