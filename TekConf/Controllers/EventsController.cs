@@ -16,7 +16,7 @@ namespace TekConf.Controllers
 {
     public class EventsController : Controller
     {
-        private teckconfdbEntities1 db = new teckconfdbEntities1();
+        private teckconfdbEntities db = new teckconfdbEntities();
 
         // GET: Events
         public ActionResult Index()

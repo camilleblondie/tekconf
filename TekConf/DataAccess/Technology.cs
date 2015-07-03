@@ -9,33 +9,15 @@ namespace TekConf.DataAccess
     {
         public static List<TekConf.Technology> GetTechnologiesList()
         {
-            using (teckconfdbEntities1 db = new teckconfdbEntities1())
+            try
             {
-                try
-                {
-                    return db.Technology.ToList();
-                }
-                catch (Exception)
-                {
-                    return new List<TekConf.Technology>();
-                }
+                teckconfdbEntities db = new teckconfdbEntities();
+                return db.Technology.ToList();
+            }
+            catch (Exception)
+            {
+                return new List<TekConf.Technology>();
             }
         }
-
-        //public static bool AddTechnologiesToEvent(long[] technologies, long eventId)
-        //{
-        //    using (teckconfdbEntities db = new teckconfdbEntities())
-        //    {
-        //        try
-        //        {
-        //            var query = insert into teckconfdbEntities.Eve
-        //            return true;
-        //        }
-        //        catch (Exception)
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //}
     }
 }

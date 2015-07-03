@@ -16,18 +16,11 @@ namespace SyndicationServiceLibrary1
         {
             // Créez un flux RSS.
             SyndicationFeed feed = new SyndicationFeed("TekConf Event", "Last 10 event added in TekConf", null);
-            List<SyndicationItem> items = new List<SyndicationItem>();
-
-            // Créez un article RSS.
-
-            List<TekConf.Event> list = TekConf.DataAccess.Event.GetLastEventsList(10);
-
-            foreach (TekConf.Event item in list)
-            {
-                SyndicationItem myitem = new SyndicationItem("idEvent :  " + item.id + " : " + item.name, item.location + ", " + item.time + " \n " + item.Technology + " \n " + item.description, null);
-                items.Add(myitem);
-            }
-
+            List<SyndicationItem> items = TekConf.DataAccess.Event.GetLastEventsList(10).Select(
+                e => new SyndicationItem("idEvent :  " + e.id + " : " + e.name, 
+                    e.location + ", " + e.time + " \n " + e.Technology + " \n " + e.description, 
+                    null)
+                ).ToList();
             feed.Items = items;
 
             // Renvoie ATOM ou RSS en fonction de la chaîne de requête

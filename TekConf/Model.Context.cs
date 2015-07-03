@@ -13,10 +13,10 @@ namespace TekConf
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class teckconfdbEntities1 : DbContext
+    public partial class teckconfdbEntities : DbContext
     {
-        public teckconfdbEntities1()
-            : base("name=teckconfdbEntities1")
+        public teckconfdbEntities()
+            : base("name=teckconfdbEntities")
         {
         }
     

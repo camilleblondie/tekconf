@@ -9,16 +9,14 @@ namespace TekConf.DataAccess
     {
         public static List<TekConf.AspNetUsers> GetUsersList()
         {
-            using (teckconfdbEntities1 db = new teckconfdbEntities1())
+            try
             {
-                try
-                {
-                    return db.AspNetUsers.ToList();
-                }
-                catch (Exception)
-                {
-                    return new List<TekConf.AspNetUsers>();
-                }
+                teckconfdbEntities db = new teckconfdbEntities();
+                return db.AspNetUsers.ToList();
+            }
+            catch (Exception)
+            {
+                return new List<TekConf.AspNetUsers>();
             }
         }
     }
