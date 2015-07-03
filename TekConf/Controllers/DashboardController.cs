@@ -13,7 +13,7 @@ namespace TekConf.Controllers
     [Authorize]
     public class DashboardController : Controller
     {
-        private teckconfdbEntities db = new teckconfdbEntities();
+        private teckconfdbEntities1 db = new teckconfdbEntities1();
         // GET: Dashboard
         public ActionResult Index()
         {

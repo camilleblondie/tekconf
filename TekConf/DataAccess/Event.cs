@@ -9,7 +9,7 @@ namespace TekConf.DataAccess
     {
         public static List<TekConf.Event> GetEventsList()
         {
-            using (teckconfdbEntities db = new teckconfdbEntities())
+            using (teckconfdbEntities1 db = new teckconfdbEntities1())
             {
                 try
                 {
@@ -24,7 +24,7 @@ namespace TekConf.DataAccess
 
         public static List<TekConf.Event> GetLastEventsList(int nb)
         {
-            using (teckconfdbEntities db = new teckconfdbEntities())
+            using (teckconfdbEntities1 db = new teckconfdbEntities1())
             {
                 try
                 {

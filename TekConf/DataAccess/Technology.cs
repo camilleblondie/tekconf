@@ -9,7 +9,7 @@ namespace TekConf.DataAccess
     {
         public static List<TekConf.Technology> GetTechnologiesList()
         {
-            using (teckconfdbEntities db = new teckconfdbEntities())
+            using (teckconfdbEntities1 db = new teckconfdbEntities1())
             {
                 try
                 {
